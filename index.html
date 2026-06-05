@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechConf 2026 - Schedule</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --transition-color: #cf6679;
+            --search-bg: #2c2c2c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 2rem 0;
+            text-align: center;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--accent-color);
+        }
+
+        .search-container {
+            margin-top: 1rem;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--search-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #search-input::placeholder {
+            color: #888;
+        }
+
+        .schedule {
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem 0;
+        }
+
+        .event-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .time-slot {
+            flex: 0 0 120px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            padding-top: 1rem;
+        }
+
+        .content-card {
+            flex: 1;
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .talk-title {
+            margin: 0 0 0.5rem 0;
+            color: var(--accent-color);
+        }
+
+        .speakers {
+            font-style: italic;
+            color: #aaa;
+            margin-bottom: 0.8rem;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-tag {
+            background-color: var(--secondary-color);
+            color: #000;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .lunch-break {
+            text-align: center;
+            background-color: var(--search-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 2px dashed var(--secondary-color);
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .transition-slot {
+            height: 10px;
+            margin-left: 120px;
+            border-left: 2px dashed var(--transition-color);
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .event-item {
+                flex-direction: column;
+            }
+            .time-slot {
+                flex: none;
+                margin-bottom: 0.5rem;
+            }
+            .transition-slot {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>TechConf 2026</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search by category (e.g. AI, Web, Cloud)...">
+    </div>
+</header>
+
+<div class="schedule" id="schedule-container">
+    <!-- Schedule will be rendered here by JS -->
+</div>
+
+<script>
+    const talks = [
+        {
+            id: 1,
+            title: "The Future of Generative AI",
+            speakers: "Jane Doe, John Smith",
+            categories: ["AI", "Machine Learning"],
+            duration: "60 mins",
+            description: "Exploring the next frontier of LLMs and creative AI. We will discuss multimodal models and the ethics of synthetic media.",
+            startTime: "10:00 AM",
+            endTime: "11:00 AM",
+            type: "talk"
+        },
+        {
+            id: 2,
+            title: "Scaling Kubernetes in Production",
+            speakers: "Alice Johnson",
+            categories: ["Cloud", "DevOps"],
+            duration: "60 mins",
+            description: "Best practices for managing large-scale clusters. Learn about service meshes, automated scaling, and disaster recovery.",
+            startTime: "11:10 AM",
+            endTime: "12:10 PM",
+            type: "talk"
+        },
+        {
+            id: 3,
+            title: "Web Performance Mastery",
+            speakers: "Bob Wilson, Clara Lee",
+            categories: ["Frontend", "Web"],
+            duration: "60 mins",
+            description: "Deep dive into Core Web Vitals and optimization techniques. From critical CSS to smart image loading strategies.",
+            startTime: "12:20 PM",
+            endTime: "01:20 PM",
+            type: "talk"
+        },
+        {
+            id: 4,
+            title: "Lunch Break",
+            type: "break",
+            startTime: "01:20 PM",
+            endTime: "02:20 PM",
+            description: "Networking and food!"
+        },
+        {
+            id: 5,
+            title: "Building Secure APIs with Node.js",
+            speakers: "David Brown",
+            categories: ["Backend", "Security"],
+            duration: "60 mins",
+            description: "A comprehensive guide to API security patterns. Topics include OAuth2, JWT hardening, and rate limiting strategies.",
+            startTime: "02:20 PM",
+            endTime: "03:20 PM",
+            type: "talk"
+        },
+        {
+            id: 6,
+            title: "Introduction to Rust for Systems Programming",
+            speakers: "Eve Green",
+            categories: ["Systems", "Rust"],
+            duration: "60 mins",
+            description: "Why Rust is the future of memory-safe systems code. A look at ownership, borrowing, and the ecosystem.",
+            startTime: "03:30 PM",
+            endTime: "04:30 PM",
+            type: "talk"
+        },
+        {
+            id: 7,
+            title: "Modern CSS Architecture",
+            speakers: "Frank White",
+            categories: ["CSS", "Web Design"],
+            duration: "60 mins",
+            description: "Leveraging CSS Grid, Flexbox, and Custom Properties to build scalable design systems.",
+            startTime: "04:40 PM",
+            endTime: "05:40 PM",
+            type: "talk"
+        }
+    ];
+
+    const container = document.getElementById('schedule-container');
+    const searchInput = document.getElementById('search-input');
+
+    function renderSchedule(filter = '') {
+        container.innerHTML = '';
+        const lowerFilter = filter.toLowerCase();
+
+        talks.forEach((item, index) => {
+            if (item.type === 'talk') {
+                const matches = item.categories.some(cat => cat.toLowerCase().includes(lowerFilter));
+                if (filter && !matches) return;
+
+                const itemEl = document.createElement('div');
+                itemEl.className = 'event-item';
+                itemEl.innerHTML = `
+                    <div class="time-slot">${item.startTime} - ${item.endTime}</div>
+                    <div class="content-card">
+                        <h2 class="talk-title">${item.title}</h2>
+                        <div class="speakers">By ${item.speakers}</div>
+                        <div class="categories">
+                            ${item.categories.map(cat => `<span class="category-tag">${cat}</span>`).join('')}
+                        </div>
+                        <div class="description">${item.description}</div>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+
+                // Add transition dash if not the last talk and next isn't lunch
+                if (index < talks.length - 1 && talks[index+1].type === 'talk') {
+                    const dash = document.createElement('div');
+                    dash.className = 'transition-slot';
+                    container.appendChild(dash);
+                }
+            } else if (item.type === 'break' && !filter) {
+                const breakEl = document.createElement('div');
+                breakEl.className = 'lunch-break';
+                breakEl.innerHTML = `${item.startTime} - ${item.endTime}: ${item.title} (${item.description})`;
+                container.appendChild(breakEl);
+            }
+        });
+
+        if (container.innerHTML === '') {
+            container.innerHTML = '<div style="text-align:center; padding: 2rem;">No talks found for that category.</div>';
+        }
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        renderSchedule(e.target.value);
+    });
+
+    // Initial render
+    renderSchedule();
+</script>
+
+</body>
+</html>
